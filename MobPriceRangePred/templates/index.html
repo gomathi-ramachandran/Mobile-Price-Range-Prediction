@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobile Price Range Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mobile Price Range Prediction</h1>
+        <form id="predict-form">
+            <div class="form-group">
+                <label for="battery_power">Battery Power:</label>
+                <input type="number" id="battery_power" name="battery_power" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="clock_speed">Clock Speed:</label>
+                <input type="number" id="clock_speed" name="clock_speed" step="0.1" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="fc">Front Camera (MP):</label>
+                <input type="number" id="fc" name="fc" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="int_memory">Internal Memory (GB):</label>
+                <input type="number" id="int_memory" name="int_memory" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="m_dep">Mobile Depth:</label>
+                <input type="number" id="m_dep" name="m_dep" step="0.1" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="mobile_wt">Mobile Weight (g):</label>
+                <input type="number" id="mobile_wt" name="mobile_wt" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="n_cores">Number of Cores:</label>
+                <input type="number" id="n_cores" name="n_cores" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="pc">Primary Camera (MP):</label>
+                <input type="number" id="pc" name="pc" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="px_height">Pixel Height (px):</label>
+                <input type="number" id="px_height" name="px_height" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="px_width">Pixel Width (px):</label>
+                <input type="number" id="px_width" name="px_width" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="ram">RAM (MB):</label>
+                <input type="number" id="ram" name="ram" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="sc_h">Screen Height (cm):</label>
+                <input type="number" id="sc_h" name="sc_h" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="sc_w">Screen Width (cm):</label>
+                <input type="number" id="sc_w" name="sc_w" class="form-control" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="talk_time">Talk Time (hours):</label>
+                <input type="number" id="talk_time" name="talk_time" class="form-control" required inputmode="numeric">
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+        <br>
+        <br>
+        <div id="loading-animation" class="mt-3 text-center" style="display: none;">
+            <h3>Predicting...</h3>
+        </div>
+        <div id="prediction" class="mt-3" style="display: none;"></div>
+    </div>
+<br>
+<br>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#predict-form').on('submit', function(event) {
+                event.preventDefault();
+                $('#loading-animation').show();
+                $('#prediction').hide();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // Simulate animation with a small delay (1.5 seconds)
+                        setTimeout(function() {
+                            $('#loading-animation').hide();
+                            $('#prediction').text('Predicted Price Range: ' + response.predicted_category);
+                            $('#prediction').show();
+                        }, 1500);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
